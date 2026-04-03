@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'pantallas/login.dart';
 import 'pantallas/home_Screen.dart';
 import 'pantallas/estadistica.dart';
-
+import 'pantallas/crearcuenta.dart';
 
 void main() {
   runApp(const MemoraApp());
@@ -27,6 +27,7 @@ class MemoraApp extends StatelessWidget {
         '/': (context) => const LoginScreen(),
         '/home': (context) => const HomeScreen(),
         '/estadisticas': (context) => const EstadisticasScreen(),
+        '/crearcuenta': (context) => const CrearCuentaScreen()
       },
     );
   }

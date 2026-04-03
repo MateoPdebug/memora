@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:memora/pantallas/crearcuenta.dart';
+import 'package:memora/services/api_services.dart';
 import 'home_screen.dart';
 // Pantalla Login
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final correoController = TextEditingController();
+  final contrasenaController = TextEditingController();
+
+  @override
+  void dispose(){
+    correoController.dispose();
+    contrasenaController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,18 +34,20 @@ class LoginScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 0),
 
                   // Logo memora
                   Center(
+                    child: Transform.translate(
+                    offset: const Offset(0, -30),
                     child: Image.asset(
                       'assets/images/logo_memora.png',
-                      width: 300,
-                      height: 300,
+                      width: 230,
+                      height: 230,
                       fit: BoxFit.contain,
                     ),
                   ),
-
+                  ),
                   const SizedBox(height: 18),
 
                   const Text(
@@ -56,11 +75,13 @@ class LoginScreen extends StatelessWidget {
 
                   // Correo
                   TextField(
+                    controller: correoController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: 'Correo',
+                      labelStyle: TextStyle(color: Colors.white),
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Colors.deepPurpleAccent,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(40),
                       ),
@@ -71,11 +92,13 @@ class LoginScreen extends StatelessWidget {
 
                   // Contraseña
                   TextField(
+                    controller: contrasenaController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Contraseña',
+                      labelStyle: TextStyle(color: Colors.white),
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Colors.deepPurpleAccent,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(40),
                       ),
@@ -100,13 +123,23 @@ class LoginScreen extends StatelessWidget {
 
                   // Botón principal
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
-                        ),
+                    onPressed: () async {
+                      bool ok = await ApiService.loginUsuario(
+                          correo: correoController.text.trim(),
+                          contrasena: contrasenaController.text.trim(),
                       );
+                      if (ok){
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context)=> const HomeScreen()),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text("Correo o contraseña incorrecto"),
+                          ),
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.deepPurpleAccent,
@@ -118,7 +151,8 @@ class LoginScreen extends StatelessWidget {
                     ),
                     child: const Text(
                       'Ingresar',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+
                     ),
                   ),
 
@@ -127,11 +161,18 @@ class LoginScreen extends StatelessWidget {
 
                   Center(
                     child: TextButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.push(context,
+                        MaterialPageRoute(
+                            builder: (context) => const CrearCuentaScreen(),
+                        ),
+                        );
+                      },
                       child: const Text(
                         'Crear cuenta',
                         style: TextStyle(
                           fontSize: 16,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

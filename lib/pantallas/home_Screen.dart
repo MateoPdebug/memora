@@ -99,9 +99,10 @@ class _HomeScreenState extends State<HomeScreen> {
           Center(
             child: Opacity(
               opacity: 0.08,
-              child: Icon(
-                Icons.account_balance_wallet,
-                size: 250,
+              child: Image.asset(
+                'assets/images/memorabackground.png',
+                width: 300,
+                height: 300,
                 color: Colors.deepPurpleAccent,
               ),
             ),
@@ -111,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                const SizedBox(height: 40),
+                const SizedBox(height: 0),
 
                 SizedBox(
                   width: double.infinity,
