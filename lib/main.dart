@@ -26,7 +26,6 @@ class MemoraApp extends StatelessWidget {
       routes: {
         '/': (context) => const LoginScreen(),
         '/home': (context) => const HomeScreen(),
-        '/estadisticas': (context) => const EstadisticasScreen(),
         '/crearcuenta': (context) => const CrearCuentaScreen()
       },
     );
