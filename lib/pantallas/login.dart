@@ -14,6 +14,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final correoController = TextEditingController();
   final contrasenaController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void dispose(){
     correoController.dispose();
@@ -72,13 +74,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
 
                   const SizedBox(height: 28),
+                Form(
+                  key: _formKey, 
+                  child: Column(
+                    children: [
 
                   // Correo
-                  TextField(
+                  TextFormField(
                     controller: correoController,
                     keyboardType: TextInputType.emailAddress,
+                    //validacion
+                      validator:(valor){
+                        if(valor==null|| valor.isEmpty){
+                          return 'El correo es obligatorio';
+                        }
+                        if(!valor.contains('@')){
+                          return 'Ingresa un correo valido';
+                        }
+                        return null;
+                      },
+                    style: const TextStyle(
+                      color: Colors.white
+                    ),
                     decoration: InputDecoration(
                       labelText: 'Correo',
+                      
                       labelStyle: TextStyle(color: Colors.white),
                       filled: true,
                       fillColor: Colors.deepPurpleAccent,
@@ -91,9 +111,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 14),
 
                   // Contraseña
-                  TextField(
+                  TextFormField(
                     controller: contrasenaController,
                     obscureText: true,
+                    validator: (valor){
+                      if(valor==null||valor.isEmpty){
+                        return 'la contraseña es obligatoria';
+                      }
+                      return null;
+                    },
+                    style: const TextStyle(
+                      color: Colors.white
+
+                    ),
                     decoration: InputDecoration(
                       labelText: 'Contraseña',
                       labelStyle: TextStyle(color: Colors.white),
@@ -124,6 +154,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   // Botón principal
                   ElevatedButton(
                     onPressed: () async {
+                      if(_formKey.currentState!.validate()){
+                        
+                      }
                       bool ok = await ApiService.loginUsuario(
                           correo: correoController.text.trim(),
                           contrasena: contrasenaController.text.trim(),
@@ -181,9 +214,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-          ),
+           ]),
         ),
       ),
-    );
+    ) )  );
+    
   }
 }
