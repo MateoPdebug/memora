@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:memora/pantallas/estadistica.dart';
 import 'package:memora/models/categorias.dart';
 import '../widgets/categoria_modal.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +119,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: double.infinity,
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/estadisticas');
+                      // ✅ NAVEGACIÓN DIRECTA - SIN RUTAS
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EstadisticasScreen(
+                            gastosPorCategoria: gastosPorCategoria,
+                          ),
+                        ),
+                      );
                     },
                     icon: const Icon(Icons.bar_chart),
                     label: const Text(
@@ -188,7 +197,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           children: [
-                            
                             SizedBox(
                               height: gastos.length > 3
                                   ? 200
