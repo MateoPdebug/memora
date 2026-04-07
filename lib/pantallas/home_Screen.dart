@@ -4,6 +4,7 @@ import 'package:memora/models/categorias.dart';
 import '../widgets/categoria_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,6 +22,18 @@ class _HomeScreenState extends State<HomeScreen> {
     Categoria(nombre: "Salud", icono: Icons.local_hospital),
     Categoria(nombre: "Entretenimiento", icono: Icons.sports_esports),
   ];
+  String pesos(dynamic monto){
+    final valor = (monto ?? 0).toDouble();
+
+    if (valor >= 1000000) {
+      return "\$${(valor / 1000000).toStringAsFixed(
+          valor % 1000000 == 0 ? 0 : 1)} M";
+    } else if (valor >= 1000){
+      return "\$${NumberFormat("#,##0","es_CO").format(valor).replaceAll(',','.')}";
+    } else {
+      return "\$${valor.toStringAsFixed(0)}";
+    }
+  }
   void abrirCategoria(Categoria categoria) {
     showModalBottomSheet(
       context: context,
@@ -187,7 +200,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               Text(
-                                "\$${gastos.fold(0.0, (sum, g) => sum + (g['monto'] ?? 0)).toStringAsFixed(2)}",
+                                pesos(
+                                gastos.fold(0.0, (sum, g) => sum + (g['monto'] ?? 0)),
+                                ),
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -230,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     trailing: Text(
-                                      "\$${(gasto['monto'] ?? 0).toStringAsFixed(2)}",
+                                      pesos(gasto['monto']),
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Color(0xFF7F5AF0),
